@@ -12,7 +12,7 @@ import java.nio.file.Paths
 object  DataBase {
 //private val BASE : String ="driver/jvm/" 
   
-private val BASE : String ="C:/Users/Mouktar/Desktop/webapp-main/driver/jvm/" 
+private val BASE : String ="C:/Users/Mouktar/Desktop/webapp-main/WepAppProject/driver/jvm/" 
   
 /*Reads a file and returns a list of all lines*/
 def readFile(fileAddress: String): List[String] = {
@@ -46,12 +46,12 @@ def getDataLinePrefixed(fileAddress : String, prefix : String ) : Option[List[St
 /**replace a line that contains a prefix*/ 
 def replaceLine(fileAddress : String, prefix : String, line : String)=
     val data = readFile(fileAddress)
-    println("line:"+line)
+    //println("line:"+line)
     if data.forall(!_.contains(prefix)) then throw new Exception("Prefix "+prefix+ "unfoud in "+ fileAddress)
     val newData = data.map( e => if  e.contains(prefix) then line else e)
-    println("------     --")
-    newData.foreach(println)
-    println("------     --")
+    //println("------     --")
+    //newData.foreach(println)
+    //println("------     --")
     appender(fileAddress)(false)(newData) 
 /**replace data for the given index */
 def replaceDataLine(fileAddress :String, prefix: String, newData :String)=
@@ -70,7 +70,7 @@ def fileExists(fileAddress: String): Boolean =
   } catch {
     
     case e: Exception =>{
-        println("nope")
+        //println("nope")
         false
     } 
   }

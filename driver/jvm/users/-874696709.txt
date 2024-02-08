@@ -1,5 +1,5 @@
 name: thitie
 icon: iconThitie
 logs: thitie@hotmail,mpdpThitie
-friendList: 
-grailleLists: 624271064
+friendList: -1424651057,-903559622
+grailleLists: 

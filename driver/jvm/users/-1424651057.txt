@@ -1,5 +1,5 @@
 name: valentin
 icon: iconThitie
 logs: thitie@hotmail,mpdpThitie
-friendList: 
+friendList: -874696709
 grailleLists: 

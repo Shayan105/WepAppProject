@@ -1,5 +1,5 @@
 name: shayan
 icon: iconThitie
 logs: thitie@hotmail,mpdpThitie
-friendList: 
-grailleLists: 
+friendList: -874696709
+grailleLists: -61614380

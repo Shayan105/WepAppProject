@@ -12,6 +12,7 @@ import TicTacToeView.*
 import java.io.File
 import java.io.PrintWriter
 import javax.xml.crypto.Data
+import tictactoe.GrailleList.retrieveFromDb
 
 
 object TicTacToeStateMachine extends cs214.webapp.StateMachine[TicTacToeEvent, TicTacToeState, TicTacToeView]:
@@ -120,27 +121,33 @@ class register:
   //DataBase.replaceDataLine(file,"name","laplace")
   //DataBase.replaceDataLine(file,"sexe","nonbin")
   println("restoTEst")
-  val r = new Restaurant("Kebab","aimez manger des kebab",2,"annoncillades")
+  val r1 = new Restaurant("Kebab","aimez manger des kebab",2,"annoncillades")
+  val r2 = new Restaurant("Glace","vive les glaces ",2,"paris")
   val t = new User("thitie","iconThitie",("thitie@hotmail","mpdpThitie"),Nil,Nil)
   t.create()
   val s = new User("shayan","iconThitie",("thitie@hotmail","mpdpThitie"),Nil,Nil)
   s.create()
   val v = new User("valentin","iconThitie",("thitie@hotmail","mpdpThitie"),Nil,Nil)
   v.create()
-  val g = new GrailleList("magragra", List(t.hashCode()), List(r) )
-  g.create()
 
-  g.addRestaurant(r)
-  g.addRestaurant(r)
-  g.addRestaurant(r)
-  g.addRestaurant(r)
 
-  g.restaurantList.foreach(println(_))
-  g.addCollaborator(t)
-  g.addCollaborator(t)
-  g.addCollaborator(s)
-  g.addCollaborator(v)
-  t.addGrailleList(g)
+  val g = new GrailleList("magragra", Nil, Nil)
   g.create()
+  //g.addRestaurant(r1)
+  g.removeRestaurant(r1)
+ // g.addRestaurant(r2)
+
+  //s.removeFriend(v.hashCode())
+  //t.removeFriend(v.hashCode())
+  t.addFriend(s.hashCode())
+  t.addFriend(v.hashCode())
+  //g.removeCollaborator(t.hashCode())
+  //g.addCollaborator(v.hashCode())
+  //g.addCollaborator(t.hashCode())
+  g.addCollaborator(s.hashCode())
+  s.getGrailleLists().foreach( l => GrailleList.retrieveFromDb(l).getRestaurants().foreach( r => println(r.name)))
+
+
+
 
 
