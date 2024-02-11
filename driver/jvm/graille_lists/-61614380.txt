@@ -1,3 +1,3 @@
 name:magragra
 collaborators: -903559622
-restaurantList:  Glace#vive les glaces #2#paris
+restaurantList:  Glace#vive les glaces #2#paris,pizza#super la vie  #3#tulear

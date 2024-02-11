@@ -1,0 +1,5 @@
+name: pomi
+icon: iconBase
+logs: pomi,sd
+friendList: 
+grailleLists: 

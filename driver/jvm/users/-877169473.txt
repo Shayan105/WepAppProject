@@ -1,0 +1,5 @@
+name: tester
+icon: iconBase
+logs: tester,sf
+friendList: 
+grailleLists: 

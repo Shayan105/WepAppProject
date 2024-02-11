@@ -13,12 +13,14 @@ import org.scalajs.dom.Element
 import org.scalajs.dom.html.{Input, Select, TextArea}
 import scalatags.JsDom.all.*
 
+
+
 abstract class Component:
   val classList: String
   def renderInto(target: dom.Element): Unit
 
   def pageHeader(subtitle: String) =
-    frag(h1(cls := "title", "ScalApp"), h2(subtitle))
+    frag(h1(cls := "title", "To Graille List"), h2(subtitle))
 
   def replaceChildren(target: dom.Element)(frag: Frag): Unit =
     target.replaceChildren(frag.render)
@@ -64,11 +66,15 @@ case class AppCreationPage(apps: Seq[String]) extends Component:
 
   def submit(e: dom.Event): Unit =
     e.preventDefault()
-    val appName = getElementById[Select]("app-name").value
-    val userIdStr = getElementById[Input]("user-ids").value
-    val userIds = userIdStr.split("[;,]").map(_.strip).to(Seq).distinct
-    Requests.createApp(appName, userIds).map: resp =>
-      WebClient.navigateTo(JoinPageLoader(appName, resp.appId))
+    //val appName = getElementById[Select]("app-name").value
+    val appName = "tictactoe"
+    val userId = getElementById[Input]("user-name").value
+    val userLog = (getElementById[Input]("user-name").value+";"+getElementById[Input]("user-pswrd").value)
+    
+    //val userIds = userIdStr.split("[;,]").map(_.strip).to(Seq).distinct
+    //WebClient.navigateTo(AppPage(appName, appId, userId))
+    Requests.createApp(appName, List(userLog)).map: resp =>
+      WebClient.navigateTo(AppPage(appName, resp.appId,userId ))
 
   def renderInto(target: Element) = replaceChildren(target):
     frag(
@@ -77,19 +83,29 @@ case class AppCreationPage(apps: Seq[String]) extends Component:
         onsubmit := submit,
         div(
           cls := "grid-form",
-          label(`for` := "app-name", "App: "),
-          select(id := "app-name", name := "app", required := true):
-            apps.map(appName => option(value := appName, appName))
-          ,
-          label(`for` := "user-ids", "User IDs: "),
+          //select(id := "app-name", name := "app", required := true):
+            //apps.map(appName => option(value := appName, appName))
+          
+          label(`for` := "user-ids"),
+          div(
           input(
             `type` := "text",
-            id := "user-ids",
-            placeholder := "user1; user2; …",
+            id := "user-name",
+            placeholder := "username",
             required := true
-          )
+          ),
+          div(style := "display: inline-block; margin-left: 15px;"),
+          input(
+          `type` := "text",
+          id := "user-pswrd",
+          placeholder := "passWord",
+          required := true,
+          
         ),
-        input(`type` := "submit", value := "Start!")
+        div(
+        input(`type` := "submit", value := "Connect"))
+        ))
+
       )
     )
 

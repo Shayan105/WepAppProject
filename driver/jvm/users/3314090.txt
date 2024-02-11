@@ -1,0 +1,5 @@
+name: lala
+icon: iconBase
+logs: lala,lalala
+friendList: 
+grailleLists: 

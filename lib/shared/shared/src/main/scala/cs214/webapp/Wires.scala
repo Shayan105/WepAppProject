@@ -84,3 +84,6 @@ class MapWire[K, V](wk: WireFormat[K], wv: WireFormat[V])
       (m: Map[K, V]) => m.toSeq,
       (s: Seq[(K, V)]) => Success(s.toMap)
     )
+
+
+

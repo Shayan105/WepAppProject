@@ -15,7 +15,9 @@ abstract class WSClientApp extends ClientApp:
   protected def init(userId: UserId, sendMessage: ujson.Value => Unit, target: dom.Element): ClientAppInstance
 
   def init(appId: AppInstanceId, userId: UserId, endpoint: String, target: dom.Element): ClientAppInstance =
+    println("ENDPOIIIINT: "+endpoint)
     val socket = new dom.WebSocket(endpoint)
+
     socket.onopen = (event: dom.Event) => println("WebSocket connection opened")
     socket.onclose = (event: dom.CloseEvent) => println(s"WebSocket connection closed: ${event.reason}")
     socket.onerror = (event: dom.Event) => println(s"WebSocket error: ${event.`type`}")

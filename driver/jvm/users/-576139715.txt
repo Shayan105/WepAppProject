@@ -1,0 +1,5 @@
+name: Shapuxd
+icon: iconBase
+logs: Shapuxd,Wkd
+friendList: 
+grailleLists: 

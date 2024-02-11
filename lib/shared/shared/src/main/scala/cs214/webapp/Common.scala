@@ -5,7 +5,7 @@ package cs214.webapp
 object Config:
   /** Which port the websocket server uses */
   val WS_PORT = 9090
-
+//prev = 9090
   /** Which port the HTTP server uses */
   val HTTP_PORT = 8080
 

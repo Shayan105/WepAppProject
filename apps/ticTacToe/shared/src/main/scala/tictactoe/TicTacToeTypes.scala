@@ -2,29 +2,35 @@
 package tictactoe
 
 import cs214.webapp.UserId
-
 import scala.util.{Failure, Success, Try}
-
+import upickle.default.{ReadWriter => RW, macroRW}
 /** Stores all information about the current game. */
  // Change this type to hold actual information (use an enum, class, …)
 type TicTacToeState = tictactoeStateClass
 
-case class tictactoeStateClass(players : Seq[UserId],lastClient: UserId, GSA  : List[List[Option[UserId]]])
+case class tictactoeStateClass(players : Seq[UserId], currentAction : AppActions)
 
 /** There is only one event in tic-tac-toe: clicking a cell. */
 enum TicTacToeEvent:
   /** User clicked cell (x, y) */
   case Move(x: Int, y: Int)
+  case CreateUser(userName: String, password : String)
 
 /** Client views reflect the state of the game: playing or finished. */
 enum TicTacToeView:
-  /** Game in progress. */
-  case Playing(board: Board, yourTurn: Boolean)
+  case dashBoardPage(userName : String, userPayload : UserPayload )
 
-  /** Game over. [[winner]] is [[None]] if the game ended in a tie. */
-  case Finished(winner: Option[UserId])
+
 
 // Change this class definition to store board states.
+case class UserPayload(icon : String , friendList : List[String] , grailleListsView : List[GrailleListView])
+case class GrailleListView(name : String, collaborators : List[String], restaurantList : List[RestaurantView])
+case class RestaurantView(var name : String,var description : String,var rank : Int,var address: String)
+
+object UserPayload {implicit val rw: RW[UserPayload] = macroRW}
+object GrailleListView {implicit val rw: RW[GrailleListView] = macroRW}
+object RestaurantView {implicit val rw: RW[RestaurantView] = macroRW}
+
 case class Board(state :  List[List[Option[UserId]]]):
   /** Get the value in the cell at (r, c). */
  // var state : TicTacToeState = List.fill(3)(List.fill(3)(None))

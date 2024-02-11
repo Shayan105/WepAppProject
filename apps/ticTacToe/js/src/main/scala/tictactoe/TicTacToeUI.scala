@@ -1,7 +1,7 @@
 package tictactoe
 
 import scala.scalajs.js.annotation.{JSExportAll, JSExportTopLevel}
-
+import org.scalajs.dom.html.Input
 import org.scalajs.dom
 import scalatags.JsDom.all.*
 
@@ -30,40 +30,44 @@ class TicTacToeClientAppInstance(userId: UserId, sendMessage: ujson.Value => Uni
     )
 
   def renderView(userId: UserId, view: TicTacToeView): Frag = view match
-    case TicTacToeView.Playing(board, yourTurn) =>
+    case TicTacToeView.dashBoardPage(username : String, userPayload : UserPayload)=>div(
       div(
-        p(i(if yourTurn then "It's your turn! Make your move."
-        else "Wait for your opponents.")),
-        // Now we create an html table with for the tic tac toe's rows and columns
+        b("nom:"),
+        username
+      ),
+      div(
+        b("Friends:"),
+        for f <- userPayload.friendList
+        yield div(f)
+      ),
+      div(
+        b("Restaurant to See"),
+        for
+          l <- userPayload.grailleListsView
+          r <- l.restaurantList
+        yield div(r.name + " with :"+ l.collaborators.reduce((a,b) => a+""+b))
+
+      ))
+
+      
+      //WebClient.navigateTo(HomePage)
+/*       div(
+        input(`type` :="text", id:="userName", required:=true, size:="10", placeholder:="UserName"),
         p(
-          cls := "board",
-          // We create 9 cells in the table
-          for
-            row <- 0 until 3
-            col <- 0 until 3
-          yield div(cls := "cell", onclick := (() => sendMove(row, col)), board(row, col).getOrElse("")),
-          input(
-            `type` := "text",
-            id := "user-ids",
-            placeholder := "mac; pc;yoyoyo..",
-            required := true,
-            width :="1200px",
-            style :="font-family: 'Courier New'"
+          input(`type` :="text", id:="userPassword", required:=true, size:="10", placeholder:="Password"),
+          button("salut", onclick :=  (() =>
+            val username = getElementById[Input]("userName").value
+            val password = getElementById[Input]("userPassword").value
+            println("command sent ("+ username +" "+ password +")")
+            sendEvent(TicTacToeEvent.CreateUser(username,password))
+            ))
 
-            
-
-          )
+         // img(src := "sf",onclick := sendEvent(TicTacToeEvent.CreateUser(getElementById[Input]("userName").value,getElementById[Input]("userPassword").value)), "Log In")
         )
+      ) */
 
-      )
 
-    case TicTacToeView.Finished(winnerId) =>
-      p(
-        cls := "finished",
-        winnerId match
-          case None           => "It's a tie!"
-          case Some(playerId) => f"$playerId has won the game!"
-      )
+      
 
 // Scala.js magic to register our application from this file
 @JSExportAll

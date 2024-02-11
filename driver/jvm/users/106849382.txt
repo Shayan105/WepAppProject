@@ -1,0 +1,5 @@
+name: pomme
+icon: iconBase
+logs: pomme,lolo
+friendList: 
+grailleLists: 

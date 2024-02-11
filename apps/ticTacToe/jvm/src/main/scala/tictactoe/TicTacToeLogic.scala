@@ -13,6 +13,7 @@ import java.io.File
 import java.io.PrintWriter
 import javax.xml.crypto.Data
 import tictactoe.GrailleList.retrieveFromDb
+import tictactoe.AppActions.* 
 
 
 object TicTacToeStateMachine extends cs214.webapp.StateMachine[TicTacToeEvent, TicTacToeState, TicTacToeView]:
@@ -20,22 +21,19 @@ object TicTacToeStateMachine extends cs214.webapp.StateMachine[TicTacToeEvent, T
   val name: String = "tictactoe"
   val wire = TicTacToeWire
   var x = 1;
-
-
-  def write(message: String): Unit = {
-  val file = new File("myFile.txt")
-  if (!file.exists()) {
-    file.createNewFile()
-    println("created")
-  }
-  println("writting")
-  val pw = new PrintWriter(file)
-  pw.close()}
+  var user : User = null
 
 
 
   override def init(clients: Seq[UserId]): TicTacToeState =
-    tictactoeStateClass(clients,clients(1),List.fill(3)(List.fill(3)(None)))
+    val logs = clients(0).split(";")
+    val userName = logs(0)
+    val password = logs(1)
+    
+    user = new User(userName,"iconBase",(userName,password),Nil,Nil)
+    user.create()
+    println("User: "+user.name+" logged in")
+    tictactoeStateClass(clients, dashBoardPage_Act)
     
 
   // Failures in the Try must hold instances of AppException
@@ -44,69 +42,40 @@ object TicTacToeStateMachine extends cs214.webapp.StateMachine[TicTacToeEvent, T
    Try{
     val file = "myFile.txt"
     
-    DataBase.replaceDataLine(file,"age","100"+x)
-    x = x+1
+  
 
     event match
-      case TicTacToeEvent.Move(y,x) => {
-        if !( y >= 0 && y<=2 && x >= 0 && x<=2 ) then throw IllegalMoveException("Out of bounds")
-        else{ 
- 
-        state.GSA(y)(x) match
-          case None => {
-            val newStateRow = state.GSA(y).updated(x,Some(uid))
-            val newState = state.GSA.updated(y,newStateRow)
-            val clients = state.players
-            val lastClient = uid
-            if state.lastClient != lastClient then 
-              List(Action.Render(tictactoeStateClass(clients,uid,newState)))
-            else throw NotYourTurnException() 
-                    }
-        
-          case _ => throw IllegalMoveException("Place already taken")
-  
-        }
-          
-       
+      case CreateUser(userName, password) =>
+        println("user Created : "+ userName)
+        val user : User = new User(userName,"iconBase",(userName,password),Nil,Nil)
+        user.create()
 
-      }
+        List(Action.Render(tictactoeStateClass(state.players,AppActions.dashBoardPage_Act)))
+
+
+      case _ => throw new IllegalArgumentException("Illegal Event")
+
   }
 
 
 
     
   override def project(state: TicTacToeState)(uid: UserId): TicTacToeView =
-    val board = Board(state.GSA)
-    val lastClient = state.lastClient 
-    val isFinished= {
-   
-    
-    val diagDone=(
-      for
-        x<-(0 until 3 )
-      yield (state.GSA(x)(x))).forall( _ == Some(lastClient))||{
-        (for
-          x<-(0 until 3 )
-        yield (state.GSA(x)(2-x))).forall( _ == Some(lastClient))}
+    val username = user.name
+    val graillelistsView : List[GrailleListView] = user.getGrailleLists()
+      .map(GrailleList.retrieveFromDb(_)) 
+      .map(
+        gl => GrailleListView(
+        gl.name,
+        gl.collaborators.map(User.retriveFromDb(_).name),
+        gl.getRestaurants().map(r => RestaurantView(r.name,r.description,r.rank,r.address))
+        ))
+    val friendList : List[String] = user.getFriendList().map(User.retriveFromDb(_).name) 
+    val userPayload = UserPayload("iconBase",friendList,graillelistsView)
 
-    val verticalsDone=(
-      for
-        x <- (0 until 3)
-      yield (state.GSA(0)(x)== Some(lastClient) && state.GSA(1)(x)== Some(lastClient) && state.GSA(2)(x)== Some(lastClient))).contains(true)
-    
-    val horizontalDone=(
-      for
-        x <- (0 until 3)
-      yield (state.GSA(x)(0)== Some(lastClient) && state.GSA(x)(1)== Some(lastClient) && state.GSA(x)(2)== Some(lastClient))).contains(true)
-   // println("diag:"+ diagDone)
- //   println("Hor:"+ horizontalDone)
- //   println("Vert:"+ verticalsDone)
-    horizontalDone || verticalsDone || diagDone
-    }
 
-    val inATie = state.GSA.flatMap(_.toList).forall(_ != None) && !isFinished
-    if inATie then Finished(None) else if isFinished then Finished(Some(lastClient)) else Playing(board,state.lastClient != uid)
-
+    //Should be matching here 
+    dashBoardPage(username,userPayload)
 
     
 

@@ -1,0 +1,5 @@
+name: silx
+icon: iconBase
+logs: silx,sf
+friendList: 
+grailleLists: 

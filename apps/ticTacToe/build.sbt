@@ -6,4 +6,4 @@ lazy val ticTacToeJS = ticTacToe.js.dependsOn(client)
 
 lazy val server = project in file("./../../lib")
 lazy val ticTacToeJVM = ticTacToe.jvm.dependsOn(server)
-  .settings(libraryDependencies += "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4")
+  .settings(libraryDependencies += "com.lihaoyi" %%% "upickle" % "3.1.4")

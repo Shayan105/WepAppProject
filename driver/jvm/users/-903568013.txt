@@ -1,0 +1,5 @@
+name: shapix
+icon: iconBase
+logs: shapix,efef
+friendList: 
+grailleLists: 

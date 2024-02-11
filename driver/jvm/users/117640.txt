@@ -1,0 +1,5 @@
+name: wfw
+icon: iconBase
+logs: wfw,w
+friendList: 
+grailleLists: 

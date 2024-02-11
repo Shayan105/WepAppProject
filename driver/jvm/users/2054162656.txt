@@ -1,0 +1,5 @@
+name: shapito
+icon: iconBase
+logs: shapito,ilane1912+
+friendList: 
+grailleLists: 

@@ -29,27 +29,32 @@ lazy val driver = (crossProject(JVMPlatform, JSPlatform) in file("./driver"))
     Test / testOnly := {},
     libraryDependencies ++= Seq(
       "com.lihaoyi" %%% "ujson" % "3.1.3",
+      "com.lihaoyi" %%% "upickle" % "3.1.3",
       "org.scala-js" %%% "scalajs-dom" % "2.8.0",
       "com.lihaoyi" %%% "scalatags" % "0.12.0",
-      "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4",
+
     )
   ).jvmSettings(
+    libraryDependencies += "com.lihaoyi" %%% "upickle" % "3.1.3",
     Compile / mainClass := Some("driver.main"),
     run / fork := true,
     Global / cancelable := true,
     libraryDependencies ++= Seq(
+
       "org.java-websocket" % "Java-WebSocket" % "1.5.4",
       "org.scala-lang" %% "toolkit-test" % "0.1.7" % Test,
       "com.lihaoyi" %% "ujson" % "3.1.3",
+      "com.lihaoyi" %%% "upickle" % "3.1.3",
       dependencies.websocket,
       dependencies.http4sCircle,
       dependencies.http4sDsl,
       dependencies.http4sEmberServer,
       dependencies.circle,
       dependencies.slf4j,
-      "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4",
+
 
     )
+    
   )
 
 lazy val driverJS = driver.js.dependsOn(ticTacToeJS, memoryJS)

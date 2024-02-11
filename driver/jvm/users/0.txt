@@ -1,0 +1,5 @@
+name: 
+icon: iconBase
+logs: ,
+friendList: 
+grailleLists: 

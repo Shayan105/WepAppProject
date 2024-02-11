@@ -7,6 +7,7 @@ lazy val shared = crossProject(JSPlatform, JVMPlatform).in(file("./shared"))
     name := "shared",
     scalaVersion := "3.3.1",
     libraryDependencies += dependencies.ujson,
+    libraryDependencies += "com.lihaoyi" %%% "upickle" % "3.1.3",
     scalacOptions ++= Seq("-deprecation")
   ).jsSettings(
     test / aggregate := false,
@@ -26,6 +27,7 @@ lazy val client = (project in file("./client"))
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "2.8.0",
       "com.lihaoyi" %%% "scalatags" % "0.12.0",
+      "com.lihaoyi" %%% "upickle" % "3.1.4"
     ),
     // Add support for the DOM in `run` and `test`
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv(),
@@ -49,6 +51,8 @@ lazy val server = (project in file("./server"))
       dependencies.http4sEmberServer,
       dependencies.circle,
       dependencies.slf4j,
+      dependencies.upickle,
+
     ),
   )
 
@@ -63,4 +67,5 @@ lazy val dependencies = new {
   val http4sCircle = "org.http4s" %% "http4s-circe" % http4sVersion
   val circle = "io.circe" %% "circe-generic" % "0.14.1"
   val slf4j = "org.slf4j" % "slf4j-nop" % "2.0.0"
+  val upickle = "com.lihaoyi" %% "upickle" % "3.1.4"
 }

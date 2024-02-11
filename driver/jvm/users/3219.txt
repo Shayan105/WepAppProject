@@ -1,0 +1,5 @@
+name: dw
+icon: iconBase
+logs: dw,wd
+friendList: 
+grailleLists: 

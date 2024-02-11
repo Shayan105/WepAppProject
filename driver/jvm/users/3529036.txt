@@ -1,0 +1,5 @@
+name: shax
+icon: iconBase
+logs: shax,shaxilane
+friendList: 
+grailleLists: 

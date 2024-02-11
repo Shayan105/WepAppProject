@@ -1,0 +1,5 @@
+name: sophie
+icon: iconBase
+logs: sophie,rur
+friendList: 
+grailleLists: 
